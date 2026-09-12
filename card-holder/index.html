@@ -244,8 +244,8 @@
             align-items: center;
             justify-content: space-between;
             padding: 10px 16px;
-            min-height: 44px;
-            font-size: 13px;
+            min-height: 48px;
+            font-size: 15px;
             font-weight: 700;
             color: #374151;
             cursor: pointer;
@@ -284,11 +284,11 @@
         }
 
         .mega-count {
-            min-width: 20px;
-            height: 20px;
+            min-width: 22px;
+            height: 22px;
             padding: 0 6px;
             border-radius: 999px;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
@@ -314,7 +314,7 @@
         }
 
         .mega-arrow {
-            font-size: 11px;
+            font-size: 12px;
             color: #94a3b8;
             transition: transform 0.2s;
         }
@@ -347,8 +347,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 16px 8px 28px;
-            font-size: 12px;
+            padding: 10px 16px 10px 28px;
+            font-size: 14px;
             font-weight: 500;
             color: #6b7280;
             cursor: pointer;
@@ -379,12 +379,12 @@
         }
 
         .sub-count {
-            min-width: 18px;
-            height: 18px;
-            padding: 0 5px;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
             margin-left: 8px;
             border-radius: 999px;
-            font-size: 9px;
+            font-size: 11px;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
@@ -485,52 +485,53 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            padding: 6px 0;
+            gap: 6px;
+            padding: 8px 0 6px;
             background: none;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             color: #1f2937;
+            font-family: inherit;
         }
 
         .mb-item:active {
             background: rgba(15, 23, 42, .06);
         }
 
-        /* 统计数字：红色数字（购物车角标惯例）+ 浅灰胶囊，与动作图标同高 */
+        /* 统计数字：红色数字（购物车角标惯例）+ 34px 固定圆形底，与动作图标完全同尺寸对齐 */
         .mb-num {
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 26px;
-            height: 26px;
-            padding: 0 7px;
+            min-width: 34px;
+            height: 34px;
+            padding: 0 4px;
             border-radius: 999px;
             background: #e2e8f0;
             color: #dc2626;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 900;
             line-height: 1;
         }
 
-        /* 动作图标：统一 26px 圆形徽章 */
+        /* 动作图标：统一 34px 圆形徽章 */
         .mb-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 26px;
-            height: 26px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: #e2e8f0;
             color: #334155;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 700;
             line-height: 1;
         }
 
         .mb-label {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
             letter-spacing: .3px;
             color: #1f2937;
@@ -582,7 +583,7 @@
                 background: #ffffff;
                 border-top: 1px solid #e2e8f0;
                 box-shadow: 0 -2px 10px rgba(15, 23, 42, .08);
-                padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
+                padding: 8px 6px calc(8px + env(safe-area-inset-bottom, 0px));
                 gap: 4px;
             }
 
