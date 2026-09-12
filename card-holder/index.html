@@ -9,6 +9,12 @@
     <!-- 引入 Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- 引入 Font Awesome 6 公共图标库（cdnjs CDN）：移动端底栏 Menu / Download / Clear
+         统一使用矢量图标，替代 Unicode 符号（☰ ⬇ ✕）——后者由各手机系统字体/表情字体
+         渲染，粗细、大小、风格不一致，甚至会被渲染成彩色 emoji -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        referrerpolicy="no-referrer">
+
     <!-- 🛡️ 防护层 1：开启 Tailwind 霸道模式，强制覆盖 WP 样式 -->
     <script>
         tailwind.config = {
@@ -17,6 +23,23 @@
     </script>
 
     <style>
+        /* 🛡️ 防护层 0：显式声明全局字体。
+           页面原先从未声明 font-family，文字字体完全取决于各设备系统默认字体：
+           国产安卓手机的系统字体是厂商中文字体（MiSans / HarmonyOS Sans 等），
+           其英文字形设计与常规英文字体差异很大，导致底栏英文小标签在手机上
+           看起来“字形很奇怪”。现统一为：主流英文系统字体优先、中文字体兜底。 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+                "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
         /* 🛡️ 防护层 2：强制剥离 WordPress 对按钮和输入框的默认干扰 */
         button {
             background-color: transparent !important;
@@ -525,8 +548,7 @@
             border-radius: 50%;
             background: #e2e8f0;
             color: #334155;
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 15px;
             line-height: 1;
         }
 
@@ -648,15 +670,15 @@
             <span class="mb-label">Total Qty</span>
         </div>
         <button class="mb-item" onclick="toggleSidebar()">
-            <span class="mb-icon">☰</span>
+            <span class="mb-icon"><i class="fa-solid fa-bars" aria-hidden="true"></i></span>
             <span class="mb-label">Menu</span>
         </button>
         <button class="mb-item mb-download" onclick="showDownloadModal()">
-            <span class="mb-icon">⬇︎</span>
+            <span class="mb-icon"><i class="fa-solid fa-download" aria-hidden="true"></i></span>
             <span class="mb-label">Download</span>
         </button>
         <button class="mb-item mb-clear" onclick="resetAll()">
-            <span class="mb-icon">✕</span>
+            <span class="mb-icon"><i class="fa-solid fa-xmark" aria-hidden="true"></i></span>
             <span class="mb-label">Clear</span>
         </button>
     </nav>
