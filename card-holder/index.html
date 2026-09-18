@@ -131,7 +131,7 @@
         .sidebar {
             position: fixed;
             left: 0;
-            top: 0;
+            top: var(--promo-h);
             bottom: 0;
             width: 288px;
             display: flex;
@@ -583,7 +583,7 @@
 
         @media (max-width: 1023px) {
             .sidebar {
-                top: 0 !important;
+                top: var(--promo-h) !important;
                 width: min(340px, 88vw);
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
@@ -618,6 +618,101 @@
             }
         }
 
+        /* ===== 顶部促销跑马灯通知栏 ===== */
+        :root {
+            --promo-h: 42px;
+        }
+
+        .promo-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--promo-h);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background: linear-gradient(90deg, #0f172a, #1e293b 50%, #0f172a);
+            color: #ffffff;
+            z-index: 400;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .35);
+        }
+
+        /* 左侧固定标签：黄底黑字，与侧边栏标题的黄色 accent 呼应 */
+        .promo-label {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 100%;
+            padding: 0 14px;
+            background: #fbbf24;
+            color: #0f172a;
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            z-index: 2;
+            box-shadow: 3px 0 10px rgba(0, 0, 0, .35);
+        }
+
+        /* 右侧滚动轨道 */
+        .promo-track {
+            flex: 1;
+            display: flex;
+            width: max-content;
+            animation-name: promo-marquee;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        .promo-track:hover {
+            animation-play-state: paused;
+        }
+
+        .promo-track .promo-item {
+            padding: 0 32px;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: var(--promo-h);
+            color: #f8fafc;
+        }
+
+        /* 文案里可用 <b> 高亮关键词，显示为主题黄 */
+        .promo-track .promo-item b {
+            color: #fbbf24;
+            font-weight: 800;
+        }
+
+        @keyframes promo-marquee {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* 顶部通知栏占位：把主体内容与侧边栏整体下移，避免遮挡 */
+        #main-wrapper {
+            padding-top: var(--promo-h) !important;
+        }
+
+        @media (max-width: 640px) {
+            .promo-track .promo-item {
+                font-size: 13px;
+                padding: 0 22px;
+            }
+
+            .promo-label {
+                padding: 0 10px;
+                font-size: 12px;
+            }
+        }
+
         /* 桌面端产品网格：固定 8 列，单列最大 195.56px（与原版卡片尺寸一致）；
            屏幕空间不足时列宽自动收缩，避免横向溢出。
            注：Tailwind 配置了 important:true，此处必须加 !important 才能覆盖 md:grid-cols-5 */
@@ -632,6 +727,12 @@
 <!-- 🌟 核心修复：增加 overflow-y-scroll 强制显示垂直滚动条轨道，防止切换分类时页面左右跳动 -->
 
 <body id="main-wrapper" class="bg-gray-50 pb-10 min-h-screen box-border transition-all duration-300 overflow-y-scroll">
+
+    <!-- ===== 顶部促销跑马灯通知栏（内容与速度在下方脚本的 PROMO_CONFIG 中修改）===== -->
+    <div class="promo-bar" id="promo-bar">
+        <div class="promo-label"><i class="fa-solid fa-bullhorn" aria-hidden="true"></i><span>Notice</span></div>
+        <div class="promo-track" id="promo-track"></div>
+    </div>
 
     <!-- 侧边栏 Mega Menu -->
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -721,6 +822,43 @@
     </div>
 
     <script>
+        // ============================================================
+        // 📢 顶部促销跑马灯配置区（在这里改内容和速度）
+        // ============================================================
+        const PROMO_CONFIG = {
+            // 1) 是否显示通知栏：true = 显示，false = 隐藏（隐藏后页面自动回到无栏状态）
+            enabled: true,
+
+            // 2) 滚动速度：数字 = 滚一轮所需的秒数。
+            //    数字越小越快，越大越慢（推荐 15~40，默认 25）
+            speed: 25,
+
+            // 3) 通知内容：数组里每一项会首尾相连循环滚动，可只写一条，也可写多条。
+            //    文案中用 <b></b> 包裹的部分会高亮成黄色（例：“<b>50% OFF</b>”）。
+            items: [
+                '🔥 <b>Everything In Stock!</b> All items ready to ship — no waiting, order today!',
+                '✨ <b>New Arrival!</b> Acrylic Display Series just launched — check it out now!'
+            ]
+        };
+
+        function initPromo() {
+            const bar = document.getElementById('promo-bar');
+            const track = document.getElementById('promo-track');
+            if (!bar || !track) return;
+            if (!PROMO_CONFIG.enabled || !PROMO_CONFIG.items || PROMO_CONFIG.items.length === 0) {
+                bar.style.display = 'none';
+                document.documentElement.style.setProperty('--promo-h', '0px');
+                return;
+            }
+            const html = PROMO_CONFIG.items
+                .map(t => `<span class="promo-item">${t}</span>`)
+                .join('');
+            // 内容重复一份，配合 translateX(-50%) 实现无缝循环
+            track.innerHTML = html + html;
+            track.style.animationDuration = (PROMO_CONFIG.speed || 25) + 's';
+        }
+        // ============================================================
+
         // ================= 配置区域 =================
         // ⚠️ 请在此处粘贴您完整的 products 数组替换下面的示例数据
         const products = [
@@ -1049,7 +1187,12 @@
             { id: 'For-PSA-Slab', category: 'Acrylic display box', name: 'For-PSA-Slab', image: 'https://hande.zzydhj.com/hande/ac-psa-slab.jpg' },
             { id: 'For-BGS-Slab', category: 'Acrylic display box', name: 'For-BGS-Slab', image: 'https://hande.zzydhj.com/hande/ac-bgs-slab.jpg' },
 
-            
+
+            { id: '3 for PSA', category: 'Acrylic display box', name: '3 for PSA', image: 'https://hande.zzydhj.com/hande/3-for-PSA.jpg' },
+            { id: '3 For Metal PSA Slab', category: 'Acrylic display box', name: '3 For Metal PSA Slab', image: 'https://hande.zzydhj.com/hande/3-For-Metal-PSA-Slab.jpg' },
+
+
+
             { id: 'Booster-Acrylic-Case', category: 'Acrylic display box', name: 'Booster-Acrylic-Case', image: 'https://hande.zzydhj.com/hande/Booster-Box-Acrylic-Case.jpg' },
             { id: 'ETB-Acrylic-Case', category: 'Acrylic display box', name: 'ETB-Acrylic-Case', image: 'https://hande.zzydhj.com/hande/ETB-Acrylic-Case.jpg' },
 
@@ -1575,6 +1718,7 @@
 
         renderSidebar();
         renderProducts();
+        initPromo();
     </script>
 </body>
 
