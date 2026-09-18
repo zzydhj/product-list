@@ -1192,8 +1192,14 @@
 
 
 
-            { id: 'Booster-Box(5mm)', category: 'Acrylic Booster Box Case', name: 'Booster-Box(5mm)', image: 'https://hande.zzydhj.com/hande/Booster-Box(5mm).jpg' },
-            { id: 'Booster-Bundle&Build(5mm)', category: 'Acrylic Booster Box Case', name: 'Booster-Bundle&Build(5mm)', image: 'https://hande.zzydhj.com/hande/Booster-Bundle&Build(5mm).jpg' },
+            { id: 'Booster-Box-(5mm)', category: 'Acrylic Booster Box Case', name: 'Booster-Box-(5mm)', image: 'https://hande.zzydhj.com/hande/Booster-Box-(5mm).jpg' },
+            { id: 'Booster-Bundle&Build-(5mm)', category: 'Acrylic Booster Box Case', name: 'Booster-Bundle&Build-(5mm)', image: 'https://hande.zzydhj.com/hande/Booster-Bundle&Build-(5mm).jpg' },
+            
+                        { id: 'Blooming-Water-(5mm+8mm)', category: 'Acrylic Booster Box Case', name: 'Blooming-Water-(5mm+8mm)', image: 'https://hande.zzydhj.com/hande/Blooming-Water-(5mm+8mm).jpg' },
+
+            
+            
+            
             { id: 'Booster-Acrylic-Case', category: 'Acrylic Booster Box Case', name: 'Booster-Acrylic-Case', image: 'https://hande.zzydhj.com/hande/Booster-Box-Acrylic-Case.jpg' },
             { id: 'ETB-Acrylic-Case', category: 'Acrylic Booster Box Case', name: 'ETB-Acrylic-Case', image: 'https://hande.zzydhj.com/hande/ETB-Acrylic-Case.jpg' },
 
@@ -1445,7 +1451,13 @@
                     </div>
 
                     <div class="p-2 flex flex-col flex-1">
-                        <h3 class="text-sm text-gray-700 font-bold truncate mb-2 text-center m-0 p-0">${product.name}</h3>
+                        <!-- 长标题两行显示：外层固定两行高度(40px)，并用负外边距上下各借 10px，
+                             使两行标题以原单行位置为中心对称展开（第一行略上、第二行略下），
+                             卡片总高、图片与输入框位置均保持不变；单行标题垂直居中留在原位。
+                             行高收紧为 leading-4(16px)：两行更紧凑，且居中后第二行抬离输入框 -->
+                        <div class="h-10 flex items-center justify-center overflow-hidden -mt-2.5 -mb-0.5">
+                            <h3 class="text-sm leading-4 text-gray-700 font-bold line-clamp-2 break-all text-center m-0 p-0 w-full">${product.name}</h3>
+                        </div>
                         <input 
                             type="number" 
                             min="0" 
