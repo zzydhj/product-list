@@ -823,6 +823,25 @@
 
     <script>
         // ============================================================
+        // 🚫 禁用右键（防 casual 复制；如需恢复，删除本段即可）
+        //   例外：输入框 / textarea / contenteditable 内不禁用，
+        //   保留系统“粘贴”菜单，不影响客户姓名 / 数量输入等正常场景。
+        //   实现上用 addEventListener（不会覆盖任何已有处理器），
+        //   只调 preventDefault（不阻断冒泡、不影响其他事件）。
+        // ============================================================
+        document.addEventListener('contextmenu', function (e) {
+            const t = e.target;
+            if (!t) { e.preventDefault(); return; }
+            const tag = t.tagName;
+            const isEditable = t.isContentEditable === true;
+            const isTextarea = tag === 'TEXTAREA';
+            const isTextInput = tag === 'INPUT' &&
+                !/^(button|submit|reset|checkbox|radio|file|image|hidden|range|color)$/i.test(t.type || 'text');
+            if (isEditable || isTextarea || isTextInput) return; // 输入区内放行右键
+            e.preventDefault();
+        });
+
+        // ============================================================
         // 📢 顶部促销跑马灯配置区（在这里改内容和速度）
         // ============================================================
         const PROMO_CONFIG = {
