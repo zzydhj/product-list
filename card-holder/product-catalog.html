@@ -459,11 +459,11 @@
         // 屏幕平铺水印，用于防截图盗用。所有可调项集中在此对象。
         const WATERMARK_CONFIG = {
             enabled: true,                          // 一键开关：false = 不显示水印
-            text: 'Sample · Do Not Copy',           // 水印文字（英文通用字样）
-            color: '#0f172a',                       // 深色，适配画册白底主体
-            opacity: 0.07,                          // 淡淡的（建议范围 0.04 ~ 0.12）
+            text: 'Foamgrid',           // 水印文字（英文通用字样）
+            color: '#777777',                       // 白色：产品图为黑底，白字在黑底/深色区最清晰
+            opacity: 0.3,                          // 当前 0.5 为调试高值；确认能显示后建议调到 0.15 ~ 0.25
             fontSize: 15,                           // 字号（px）
-            fontWeight: 800,                        // 加粗：低透明度下仍清晰可辨
+            fontWeight: 600,                        // 加粗：低透明度下仍清晰可辨
             angle: -28,                             // 斜向角度（度），负值 = 左上到右下
             tileWidth: 240,                         // 平铺单元宽度（px）
             tileHeight: 150,                        // 平铺单元高度（px）
@@ -477,13 +477,16 @@
             // 转义 XML 特殊字符，防止改文字时打破 SVG
             const safeText = String(cfg.text)
                 .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            // 字体名里的引号必须转义，否则会截断 SVG 的 font-family 属性导致整张图失效
+            const safeFont = String(cfg.fontFamily)
+                .replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
             const cx = cfg.tileWidth / 2, cy = cfg.tileHeight / 2;
             const svg =
                 `<svg xmlns="http://www.w3.org/2000/svg" width="${cfg.tileWidth}" height="${cfg.tileHeight}">` +
                     `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" ` +
                           `transform="rotate(${cfg.angle} ${cx} ${cy})" ` +
                           `fill="${cfg.color}" fill-opacity="${cfg.opacity}" ` +
-                          `font-family="${cfg.fontFamily}" font-size="${cfg.fontSize}" font-weight="${cfg.fontWeight}">` +
+                          `font-family="${safeFont}" font-size="${cfg.fontSize}" font-weight="${cfg.fontWeight}">` +
                         safeText +
                     `</text>` +
                 `</svg>`;
@@ -825,6 +828,18 @@
             { id: '金色BGS-D-17', category: 'BGS Alu Single Color', name: 'BGS-D-17', image: 'https://hande.zzydhj.com/hande/D-17.jpg' },
             { id: '浅蓝BGS-D-18', category: 'BGS Alu Single Color', name: 'BGS-D-18', image: 'https://hande.zzydhj.com/hande/D-18.jpg' },
 
+            { id: 'Magnetic-PSA-Base-(Black)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Black)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Black).jpg' },
+            { id: 'Magnetic-PSA-Base-(Blue)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Blue)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Blue).jpg' },
+            { id: 'Magnetic-PSA-Base-(Gold)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Gold)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Gold).jpg' },
+            { id: 'Magnetic-PSA-Base-(Green)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Green)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Green).jpg' },
+            { id: 'Magnetic-PSA-Base-(Light-Blue)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Light-Blue)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Light-Blue).jpg' },
+            { id: 'Magnetic-PSA-Base-(Orange)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Orange)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Orange).jpg' },
+            { id: 'Magnetic-PSA-Base-(Pink)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Pink)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Pink).jpg' },
+            { id: 'Magnetic-PSA-Base-(Purple)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Purple)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Purple).jpg' },
+            { id: 'Magnetic-PSA-Base-(Red)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Red)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Red).jpg' },
+            { id: 'Magnetic-PSA-Base-(Silver)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Silver)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Silver).jpg' },
+            { id: 'PSA-35PT-Integrated-Base', category: 'Magnetic PSA Base', name: 'PSA-35PT-Integrated-Base', image: 'https://hande.zzydhj.com/hande/PSA-35PT-Integrated-Base.jpg' },
+
 
             { id: 'For-PSA', category: 'Acrylic display box', name: 'For-PSA', image: 'https://hande.zzydhj.com/hande/ac-psa.jpg' },
             { id: 'For-BGS', category: 'Acrylic display box', name: 'For-BGS', image: 'https://hande.zzydhj.com/hande/ac-bgs.jpg' },
@@ -878,18 +893,6 @@
             { id: '6-Pocket-PP-Binder-(Sky-Blue)', category: '6 Pocket PP Card Binder', name: '6-Pocket-PP-Binder-(Sky-Blue)', image: 'https://hande.zzydhj.com/hande/6-Pocket-PP-Binder-(Sky-Blue).jpg' },
             { id: '6-Pocket-PP-Binder-(White)', category: '6 Pocket PP Card Binder', name: '6-Pocket-PP-Binder-(White)', image: 'https://hande.zzydhj.com/hande/6-Pocket-PP-Binder-(White).jpg' },
             { id: '6-Pocket-PP-Binder-(Yellow)', category: '6 Pocket PP Card Binder', name: '6-Pocket-PP-Binder-(Yellow)', image: 'https://hande.zzydhj.com/hande/6-Pocket-PP-Binder-(Yellow).jpg' },
-
-            { id: 'Magnetic-PSA-Base-(Black)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Black)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Black).jpg' },
-            { id: 'Magnetic-PSA-Base-(Blue)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Blue)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Blue).jpg' },
-            { id: 'Magnetic-PSA-Base-(Gold)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Gold)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Gold).jpg' },
-            { id: 'Magnetic-PSA-Base-(Green)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Green)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Green).jpg' },
-            { id: 'Magnetic-PSA-Base-(Light-Blue)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Light-Blue)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Light-Blue).jpg' },
-            { id: 'Magnetic-PSA-Base-(Orange)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Orange)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Orange).jpg' },
-            { id: 'Magnetic-PSA-Base-(Pink)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Pink)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Pink).jpg' },
-            { id: 'Magnetic-PSA-Base-(Purple)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Purple)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Purple).jpg' },
-            { id: 'Magnetic-PSA-Base-(Red)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Red)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Red).jpg' },
-            { id: 'Magnetic-PSA-Base-(Silver)', category: 'Magnetic PSA Base', name: 'Magnetic-PSA-Base-(Silver)', image: 'https://hande.zzydhj.com/hande/Magnetic-PSA-Base-(Silver).jpg' },
-            { id: 'PSA-35PT-Integrated-Base', category: 'Magnetic PSA Base', name: 'PSA-35PT-Integrated-Base', image: 'https://hande.zzydhj.com/hande/PSA-35PT-Integrated-Base.jpg' },
 
 
         ];
