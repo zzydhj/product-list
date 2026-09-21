@@ -113,7 +113,8 @@
             margin: 0 auto;
             background: white;
             box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
-            position: relative; /* 作为水印层的定位参照 */
+            position: relative;
+            /* 作为水印层的定位参照 */
         }
 
         /* 封面（压缩高度版 Banner） */
@@ -483,12 +484,12 @@
             const cx = cfg.tileWidth / 2, cy = cfg.tileHeight / 2;
             const svg =
                 `<svg xmlns="http://www.w3.org/2000/svg" width="${cfg.tileWidth}" height="${cfg.tileHeight}">` +
-                    `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" ` +
-                          `transform="rotate(${cfg.angle} ${cx} ${cy})" ` +
-                          `fill="${cfg.color}" fill-opacity="${cfg.opacity}" ` +
-                          `font-family="${safeFont}" font-size="${cfg.fontSize}" font-weight="${cfg.fontWeight}">` +
-                        safeText +
-                    `</text>` +
+                `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" ` +
+                `transform="rotate(${cfg.angle} ${cx} ${cy})" ` +
+                `fill="${cfg.color}" fill-opacity="${cfg.opacity}" ` +
+                `font-family="${safeFont}" font-size="${cfg.fontSize}" font-weight="${cfg.fontWeight}">` +
+                safeText +
+                `</text>` +
                 `</svg>`;
             layer.style.backgroundImage =
                 `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
@@ -557,7 +558,11 @@
             { id: 'PSAD-029', category: 'PSA with Double panels (full protection)', name: 'PSAD-029', image: 'https://hande.zzydhj.com/hande/PSAD-029.jpg' },
             { id: 'PSAD-031', category: 'PSA with Double panels (full protection)', name: 'PSAD-031', image: 'https://hande.zzydhj.com/hande/PSAD-031.jpg' },
             { id: 'PSAD-033', category: 'PSA with Double panels (full protection)', name: 'PSAD-033', image: 'https://hande.zzydhj.com/hande/PSAD-033.jpg' },
+            { id: 'PSAD-036', category: 'PSA with Double panels (full protection)', name: 'PSAD-036', image: 'https://hande.zzydhj.com/hande/PSAD-036.jpg' },
+            { id: 'PSAD-045A', category: 'PSA with Double panels (full protection)', name: 'PSAD-045A', image: 'https://hande.zzydhj.com/hande/PSAD-045A.jpg' },
+            { id: 'PSAD-046A', category: 'PSA with Double panels (full protection)', name: 'PSAD-046A', image: 'https://hande.zzydhj.com/hande/PSAD-046A.jpg' },
             { id: 'PSAD-048', category: 'PSA with Double panels (full protection)', name: 'PSAD-048', image: 'https://hande.zzydhj.com/hande/PSAD-048.jpg' },
+            { id: 'PSAD-050A', category: 'PSA with Double panels (full protection)', name: 'PSAD-050A', image: 'https://hande.zzydhj.com/hande/PSAD-050A.jpg' },
             { id: 'PSAD-049', category: 'PSA with Double panels (full protection)', name: 'PSAD-049', image: 'https://hande.zzydhj.com/hande/PSAD-049.jpg' },
             { id: 'PSAD-053', category: 'PSA with Double panels (full protection)', name: 'PSAD-053', image: 'https://hande.zzydhj.com/hande/PSAD-053.jpg' },
             { id: 'PSAD-054', category: 'PSA with Double panels (full protection)', name: 'PSAD-054', image: 'https://hande.zzydhj.com/hande/PSAD-054.jpg' },
@@ -893,7 +898,6 @@
             { id: '9-Pocket-PP-Binder-(Sky-Blue)', category: '9 Pocket PP Card Binder', name: '9-Pocket-PP-Binder-(Sky-Blue)', image: 'https://hande.zzydhj.com/hande/6-Pocket-PP-Binder-(Sky-Blue).jpg' },
             { id: '9-Pocket-PP-Binder-(White)', category: '9 Pocket PP Card Binder', name: '9-Pocket-PP-Binder-(White)', image: 'https://hande.zzydhj.com/hande/6-Pocket-PP-Binder-(White).jpg' },
             { id: '9-Pocket-PP-Binder-(Yellow)', category: '9 Pocket PP Card Binder', name: '9-Pocket-PP-Binder-(Yellow)', image: 'https://hande.zzydhj.com/hande/6-Pocket-PP-Binder-(Yellow).jpg' },
-
 
         ];
 
