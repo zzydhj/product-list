@@ -6,21 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selection and Order Form</title>
 
-    <!-- 引入 Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Tailwind：已改为本地静态 CSS（方案 1），不再依赖运行时 CDN。
+         样式表在 </head> 前引入，以保持与原 Play CDN 注入顺序一致的层叠关系，见文件末尾。 -->
 
-    <!-- 引入 Font Awesome 6 公共图标库（cdnjs CDN）：移动端底栏 Menu / Download / Clear
+    <!-- 引入 Font Awesome 6 图标库（已本地化至 vendor/fontawesome，版本 6.5.2，与原 cdnjs 一致）：
+         移动端底栏 Menu / Download / Clear 与顶部通知栏小喇叭
          统一使用矢量图标，替代 Unicode 符号（☰ ⬇ ✕）——后者由各手机系统字体/表情字体
          渲染，粗细、大小、风格不一致，甚至会被渲染成彩色 emoji -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
 
-    <!-- 🛡️ 防护层 1：开启 Tailwind 霸道模式，强制覆盖 WP 样式 -->
-    <script>
-        tailwind.config = {
-            important: true
-        }
-    </script>
+    <!-- 🛡️ 防护层 1：开启 Tailwind 霸道模式，强制覆盖 WP 样式。
+         important: true 已在构建期写入 tailwind.config.js，生成的 tailwind.css
+         中所有工具类均带 !important，效果与原运行时配置完全一致。 -->
 
     <style>
         /* 🛡️ 防护层 0：显式声明全局字体。
@@ -723,6 +720,10 @@
             }
         }
     </style>
+
+    <!-- Tailwind 静态样式（方案 1 产物）：置于自定义 <style> 之后、</head> 之前，
+         与原 Play CDN 运行时将 <style> 追加到 head 末尾的顺序一致，确保层叠关系不变 -->
+    <link rel="stylesheet" href="tailwind.css">
 </head>
 <!-- 🌟 核心修复：增加 overflow-y-scroll 强制显示垂直滚动条轨道，防止切换分类时页面左右跳动 -->
 
