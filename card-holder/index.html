@@ -64,13 +64,8 @@
             box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5) !important;
         }
 
-        /* 停用产品卡片（ID 登记在 DISABLED_PRODUCT_IDS 中）：
-           整卡置灰表示不可选；数量输入框由 disabled 属性禁用，并显示灰底灰字 */
-        .product-card.disabled {
-            filter: grayscale(1);
-            opacity: 0.6;
-        }
-
+        /* 停用产品（ID 登记在 DISABLED_PRODUCT_IDS 中）：
+           图片保持原样（彩色、可点击放大），仅数量输入框由 disabled 属性禁用，并显示灰底灰字 */
         .product-card.disabled input[type=number] {
             background-color: #f3f4f6 !important;
             color: #9ca3af !important;
@@ -1125,6 +1120,7 @@
             { id: 'HY016-A', category: 'PSA Glossy Finish No Plate', name: 'HY016-A', image: 'https://hande.zzydhj.com/hande/HY016-A.jpg' },
             { id: 'HY003-A', category: 'PSA Glossy Finish No Plate', name: 'HY003-A', image: 'https://hande.zzydhj.com/hande/HY003-A.jpg' },
 
+            { id: 'ALL-A', category: 'PSA Alu Speckled', name: 'ALL-A', image: 'https://hande.zzydhj.com/hande/ALL-A.jpg' },
             { id: '渐变蓝黄飘花A-1', category: 'PSA Alu Speckled', name: 'A-1', image: 'https://hande.zzydhj.com/hande/A-1.jpg' },
             { id: '渐变黑金飘花A-2', category: 'PSA Alu Speckled', name: 'A-2', image: 'https://hande.zzydhj.com/hande/A-2.jpg' },
             { id: '渐变蓝紫飘花A-3', category: 'PSA Alu Speckled', name: 'A-3', image: 'https://hande.zzydhj.com/hande/A-3.jpg' },
@@ -1149,7 +1145,7 @@
             { id: '烤瓷白B-7', category: 'PSA Alu Porcelain', name: 'B-7', image: 'https://hande.zzydhj.com/hande/B-7.jpg' },
             { id: '烤瓷黄B-8', category: 'PSA Alu Porcelain', name: 'B-8', image: 'https://hande.zzydhj.com/hande/B-8.jpg' },
 
-
+            { id: 'ALL-C', category: 'PSA Alu Gradient', name: 'ALL-C', image: 'https://hande.zzydhj.com/hande/ALL-C.jpg' },
             { id: '渐变蓝红C-1', category: 'PSA Alu Gradient', name: 'C-1', image: 'https://hande.zzydhj.com/hande/C-1.jpg' },
             { id: '渐变黑紫C-2', category: 'PSA Alu Gradient', name: 'C-2', image: 'https://hande.zzydhj.com/hande/C-2.jpg' },
             { id: '渐变蓝紫C-3', category: 'PSA Alu Gradient', name: 'C-3', image: 'https://hande.zzydhj.com/hande/C-3.jpg' },
@@ -1171,6 +1167,7 @@
 
             { id: '三色渐变C-15', category: 'PSA Alu Gradient 3 Color', name: 'C-15', image: 'https://hande.zzydhj.com/hande/C-15.jpg' },
 
+            { id: 'ALL-D', category: 'PSA Alu Single Color', name: 'ALL-D', image: 'https://hande.zzydhj.com/hande/ALL-D.jpg' },
             { id: '墨绿色D-1', category: 'PSA Alu Single Color', name: 'D-1', image: 'https://hande.zzydhj.com/hande/D-1.jpg' },
             { id: '玫红色D-2', category: 'PSA Alu Single Color', name: 'D-2', image: 'https://hande.zzydhj.com/hande/D-2.jpg' },
             { id: '粉色D-3', category: 'PSA Alu Single Color', name: 'D-3', image: 'https://hande.zzydhj.com/hande/D-3.jpg' },
@@ -1361,12 +1358,12 @@
         // ================= 停用产品配置（停售 / 缺货型号）=================
         // 需要在前端停用的产品 ID 填在这个数组里，须与上方 products 中的 id 完全一致（区分大小写）。
         // 示例：const DISABLED_PRODUCT_IDS = ['HY001-D', 'PSAD-029'];
-        // 效果：对应产品卡片默认置灰、数量输入框禁用（不可选、不可填），
+        // 效果：对应产品数量输入框禁用（不可点、不可填、灰底显示），图片保持彩色并可放大查看，
         //       且不计入任何统计、本地暂存与订单导出；保持空数组 [] 即全部产品可选。
-        const DISABLED_PRODUCT_IDS = ['ALL-F'];
+        const DISABLED_PRODUCT_IDS = ['ALL-F', 'ALL-A', 'ALL-C', 'ALL-D'];
         const disabledIdSet = new Set(DISABLED_PRODUCT_IDS);
 
-        // 产品是否已停用：渲染时用于卡片置灰与输入框禁用
+        // 产品是否已停用：渲染时用于禁用该产品的数量输入框
         function isDisabled(id) {
             return disabledIdSet.has(id);
         }
