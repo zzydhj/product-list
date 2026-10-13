@@ -64,6 +64,19 @@
             box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5) !important;
         }
 
+        /* 停用产品卡片（ID 登记在 DISABLED_PRODUCT_IDS 中）：
+           整卡置灰表示不可选；数量输入框由 disabled 属性禁用，并显示灰底灰字 */
+        .product-card.disabled {
+            filter: grayscale(1);
+            opacity: 0.6;
+        }
+
+        .product-card.disabled input[type=number] {
+            background-color: #f3f4f6 !important;
+            color: #9ca3af !important;
+            cursor: not-allowed;
+        }
+
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none !important;
@@ -1345,6 +1358,26 @@
             { id: 'Card-Divider-16', category: 'PP Card Divider', name: 'Card-Divider-16', image: 'https://hande.zzydhj.com/hande/Card-Divider-16.jpg' },
         ];
 
+        // ================= 停用产品配置（停售 / 缺货型号）=================
+        // 需要在前端停用的产品 ID 填在这个数组里，须与上方 products 中的 id 完全一致（区分大小写）。
+        // 示例：const DISABLED_PRODUCT_IDS = ['HY001-D', 'PSAD-029'];
+        // 效果：对应产品卡片默认置灰、数量输入框禁用（不可选、不可填），
+        //       且不计入任何统计、本地暂存与订单导出；保持空数组 [] 即全部产品可选。
+        const DISABLED_PRODUCT_IDS = ['ALL-F'];
+        const disabledIdSet = new Set(DISABLED_PRODUCT_IDS);
+
+        // 产品是否已停用：渲染时用于卡片置灰与输入框禁用
+        function isDisabled(id) {
+            return disabledIdSet.has(id);
+        }
+
+        // 读取产品数量的统一入口：停用产品恒返回 0，
+        // 保证统计、本地暂存、下单校验与导出都自然排除停用型号
+        function getQty(id) {
+            if (disabledIdSet.has(id)) return 0;
+            return parseInt(document.getElementById(`input-${id}`).value) || 0;
+        }
+
         // ================= 分组配置（category0 映射）=================
         // ⚠️ 后续新增分组只需在此处添加映射即可，产品数据无需手动修改
         // 支持两级或三级：
@@ -1574,7 +1607,7 @@
 
         function renderProducts() {
             grid.innerHTML = products.map(product => `
-                <div class="product-card bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col ${(product.category === currentCategory || currentCategory === null) && getGroupForCategory(product.category) === currentGroup ? '' : 'hidden'}" 
+                <div class="product-card bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col ${(product.category === currentCategory || currentCategory === null) && getGroupForCategory(product.category) === currentGroup ? '' : 'hidden'} ${isDisabled(product.id) ? 'disabled' : ''}" 
                      id="card-${product.id}" 
                      data-category="${product.category}"
                      data-group="${getGroupForCategory(product.category)}">
@@ -1609,6 +1642,7 @@
                             style="border: 1px solid #d1d5db !important;"
                             oninput="handleInput('${product.id}', this)"
                             id="input-${product.id}"
+                            ${isDisabled(product.id) ? 'disabled' : ''}
                         >
                     </div>
                 </div>
@@ -1651,7 +1685,7 @@
             categoryGroups.forEach(g => groupBreakdown[g] = 0);
 
             products.forEach(p => {
-                const val = parseInt(document.getElementById(`input-${p.id}`).value) || 0;
+                const val = getQty(p.id);
                 if (val > 0) {
                     items++;
                     qty += val;
@@ -1707,8 +1741,8 @@
         function saveToStorage() {
             const data = {};
             products.forEach(p => {
-                const val = document.getElementById(`input-${p.id}`).value;
-                if (val && val > 0) {
+                const val = getQty(p.id);
+                if (val > 0) {
                     data[p.id] = val;
                 }
             });
@@ -1720,6 +1754,7 @@
             if (savedData) {
                 const data = JSON.parse(savedData);
                 Object.keys(data).forEach(id => {
+                    if (isDisabled(id)) return; // 停用型号不恢复历史数量
                     const input = document.getElementById(`input-${id}`);
                     if (input) {
                         input.value = data[id];
@@ -1746,7 +1781,7 @@
         }
 
         function showDownloadModal() {
-            const hasData = products.some(p => (parseInt(document.getElementById(`input-${p.id}`).value) || 0) > 0);
+            const hasData = products.some(p => getQty(p.id) > 0);
             if (!hasData) {
                 alert("Please select at least one product! (请至少输入一个产品的数量)");
                 return;
@@ -1789,16 +1824,12 @@
         }
 
         function exportToExcel(customerName) {
-            const selectedProducts = products.filter(p => {
-                const val = parseInt(document.getElementById(`input-${p.id}`).value) || 0;
-                return val > 0;
-            });
+            const selectedProducts = products.filter(p => getQty(p.id) > 0);
 
             const grouped = {};
             selectedProducts.forEach(p => {
                 if (!grouped[p.category]) grouped[p.category] = [];
-                const val = parseInt(document.getElementById(`input-${p.id}`).value) || 0;
-                grouped[p.category].push({ ...p, val });
+                grouped[p.category].push({ ...p, val: getQty(p.id) });
             });
 
             const activeCategories = Object.keys(grouped);
